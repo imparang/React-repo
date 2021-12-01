@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react'
+import axios from 'axios'
 
 const ProxyTest = () => {
   const [getData, setGetData] = useState('')
@@ -98,7 +98,7 @@ const ProxyTest = () => {
         <button onClick={getApiUsersJsonPostSend}>보내버렷</button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProxyTest;
+export default ProxyTest
