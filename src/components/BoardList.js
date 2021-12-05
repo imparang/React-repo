@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Table } from 'reactstrap'
 import Board from './Board'
 import PropTypes from 'prop-types'
-import ModalComponent from './ModalComponent'
+import AddPostModal from './AddPostModal'
 
 const BoardList = ({ data }) => {
   const [boards, setBoards] = useState([])
@@ -43,7 +43,7 @@ const BoardList = ({ data }) => {
         >
           추가
         </Button>
-        <ModalComponent isModal={isModal} toggleModal={toggleModal} />
+        <AddPostModal isModal={isModal} toggleModal={toggleModal} />
       </div>
     </>
   ) : (
