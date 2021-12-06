@@ -1,91 +1,59 @@
-import { getApiAxios } from '../../api/jsonApi'
+import {
+  GET_BOARDLIST_REQUEST,
+  GET_BOARDLIST_SUCCESS,
+  GET_BOARDLIST_FAILURE,
+  INSERT_BOARD_REQUEST,
+  INSERT_BOARD_SUCCESS,
+  INSERT_BOARD_FAILURE,
+  UPDATE_BOARD_REQUEST,
+  UPDATE_BOARD_SUCCESS,
+  UPDATE_BOARD_FAILURE,
+  DELETE_BOARD_REQUEST,
+  DELETE_BOARD_SUCCESS,
+  DELETE_BOARD_FAILURE,
+} from '../types'
 
-const GET_REQUEST = 'GET_REQUEST'
-const GET_BOARDLIST = 'GET_BOARDLIST'
-const INSERT_BOARD = 'INSERT_BOARD'
-const UPDATE_BOARD = 'UPDATE_BOARD'
-const DELETE_BOARD = 'DELETE_BOARD'
-const GET_FAILED = 'GET_FAILED'
-
-function getApi(type, data) {
-  return getApiAxios(type, data)
-}
-
-export const getBoardList = searchData => async dispatch => {
-  dispatch({ type: GET_REQUEST })
-  try {
-    const response = await getApi('list', { searchData })
-    dispatch({
-      type: GET_BOARDLIST,
-      payload: response,
-    })
-  } catch (error) {
-    dispatch({
-      type: GET_FAILED,
-      payload: error,
-    })
-    throw error
+export const getBoardList = data => {
+  return {
+    type: GET_BOARDLIST_REQUEST,
+    data,
   }
 }
 
-export const insertBoard = (title, content, insertUser) => async dispatch => {
-  dispatch({ type: GET_REQUEST })
-  try {
-    const response = await getApi('insert', {
-      title,
-      content,
-      insert_user: insertUser,
-    })
-    dispatch({
-      type: INSERT_BOARD,
-      payload: response,
-    })
-  } catch (error) {
-    dispatch({
-      type: GET_FAILED,
-      payload: error,
-    })
-    throw error
+export const insertBoard = data => {
+  return {
+    type: INSERT_BOARD_REQUEST,
+    data,
   }
 }
 
-export const updateBoard = (id, title, content) => async dispatch => {
-  dispatch({ type: GET_REQUEST })
-  try {
-    const response = await getApi('update', { id, title, content })
-    dispatch({
-      type: UPDATE_BOARD,
-      payload: response,
-    })
-  } catch (error) {
-    dispatch({
-      type: GET_FAILED,
-      payload: error,
-    })
-    throw error
+export const updateBoard = data => {
+  return {
+    type: UPDATE_BOARD_REQUEST,
+    data,
   }
 }
 
-export const deleteBoard = id => async dispatch => {
-  dispatch({ type: GET_REQUEST })
-  try {
-    const response = await getApi('delete', { id })
-    dispatch({
-      type: DELETE_BOARD,
-      payload: response,
-    })
-  } catch (error) {
-    dispatch({
-      type: GET_FAILED,
-      payload: error,
-    })
-    throw error
+export const deleteBoard = id => {
+  return {
+    type: DELETE_BOARD_REQUEST,
+    id,
   }
 }
 
 const initial = {
-  pending: false,
-  error: false,
+  getBoardLoading: false,
+  getBoardDone: false,
+  getBoardError: null,
+  insertBoardLoading: false,
+  insertBoardDone: false,
+  insertBoardError: null,
+  updateBoardLoading: false,
+  updateBoardDone: false,
+  updateBoardError: null,
+  deleteBoardLoading: false,
+  deleteBoardDone: false,
+  deleteBoardError: null,
   data: {
     id: '',
     title: '',
@@ -97,39 +65,84 @@ const initial = {
 
 const apiReducer = (state = initial, action) => {
   switch (action.type) {
-    case GET_REQUEST:
+    case GET_BOARDLIST_REQUEST:
       return {
         ...state,
-        pending: true,
-        error: false,
+        getBoardLoading: true,
+        getBoardDone: false,
+        getBoardError: null,
       }
-    case GET_BOARDLIST:
+    case GET_BOARDLIST_SUCCESS:
       return {
         ...state,
-        pending: false,
-        data: {
-          ...action.payload,
-        },
+        getBoardLoading: false,
+        getBoardDone: true,
+        data: action.data,
       }
-    case INSERT_BOARD:
+    case GET_BOARDLIST_FAILURE:
+      return {
+        getBoardLoading: false,
+        getBoardError: true,
+        data: action.data,
+      }
+    case INSERT_BOARD_REQUEST:
       return {
         ...state,
-        pendig: false,
+        insertBoardLoading: true,
+        insertBoardDone: false,
+        insertBoardError: null,
       }
-    case UPDATE_BOARD:
+    case INSERT_BOARD_SUCCESS:
       return {
         ...state,
-        pending: false,
+        insertBoardLoading: false,
+        insertBoardDone: true,
+        data: action.data,
       }
-    case DELETE_BOARD:
+    case INSERT_BOARD_FAILURE:
+      return {
+        insertBoardLoading: false,
+        insertBoardError: true,
+        data: action.data,
+      }
+    case UPDATE_BOARD_REQUEST:
       return {
         ...state,
-        pending: false,
+        updateBoardLoading: true,
+        updateBoardDone: false,
+        updateBoardError: null,
       }
-    case GET_FAILED:
+    case UPDATE_BOARD_SUCCESS:
       return {
-        pending: false,
-        error: true,
+        ...state,
+        updateBoardLoading: false,
+        updateBoardDone: true,
+        data: action.data,
+      }
+    case UPDATE_BOARD_FAILURE:
+      return {
+        updateBoardLoading: false,
+        updateBoardError: true,
+      }
+    case DELETE_BOARD_REQUEST:
+      return {
+        ...state,
+        deleteBoardLoading: true,
+        deleteBoardDone: false,
+        deleteBoardError: null,
+      }
+    case DELETE_BOARD_SUCCESS:
+      return {
+        ...state,
+        deleteBoardLoading: false,
+        deleteBoardDone: true,
+        data: action.data,
+      }
+    case DELETE_BOARD_FAILURE:
+      return {
+        deleteBoardLoading: false,
+        deleteBoardError: true,
+        data: action.data,
       }
     default:
       return state
