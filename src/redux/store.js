@@ -1,17 +1,21 @@
 import rootReducer from './reducers/reducer'
 import { applyMiddleware, createStore } from 'redux'
 import logger from 'redux-logger'
-import thunk from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
+// import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import rootSaga from '../sagas'
 
 // middleware apply
-const middleware = [thunk, logger]
-
-// action -> (middleware) -> dispatch -> reducer -> store
-// 로그인 상태, 권한 검증
+const sagaMiddleware = createSagaMiddleware()
+const middleware = [sagaMiddleware, logger]
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(...middleware))
 )
+store.sagaTask = sagaMiddleware.run(rootSaga)
+
+// action -> (middleware) -> dispatch -> reducer -> store
+// 로그인 상태, 권한 검증
 
 export default store
