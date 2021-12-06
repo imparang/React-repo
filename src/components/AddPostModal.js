@@ -32,9 +32,12 @@ const ModalComponent = ({ isModal, toggleModal }) => {
   const onSubmit = useCallback(
     async e => {
       e.preventDefault()
-      await dispatch(insertBoard(title, content, username))
+      await dispatch(insertBoard({ title, content, insert_user: username }))
       await dispatch(getBoardList())
       toggleModal()
+      setTitle('')
+      setContent('')
+      setUsername('')
     },
     [title, content, username]
   )

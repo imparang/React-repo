@@ -15,7 +15,7 @@ const SearchForm = () => {
   const onSubmit = useCallback(
     e => {
       e.preventDefault()
-      dispatch(getBoardList(searchData))
+      dispatch(getBoardList({ searchData }))
     },
     [searchData]
   )

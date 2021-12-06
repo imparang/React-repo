@@ -38,7 +38,7 @@ const BoardList = ({ data }) => {
       <div style={{ position: 'relative' }}>
         <Button
           onClick={toggleModal}
-          style={{ position: 'absolute', right: 0 }}
+          style={{ position: 'absolute', right: '10px' }}
           color="primary"
         >
           추가

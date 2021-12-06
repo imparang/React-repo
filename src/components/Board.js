@@ -16,8 +16,8 @@ import { deleteBoard, getBoardList, updateBoard } from '../redux/reducers/board'
 
 const Board = ({ board }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const [title, setTitle] = useState(board.title)
+  const [content, setContent] = useState(board.content)
 
   const onChangeTitle = useCallback(e => {
     setTitle(e.target.value)
@@ -31,7 +31,7 @@ const Board = ({ board }) => {
   const onSubmit = useCallback(
     async e => {
       e.preventDefault()
-      await dispatch(updateBoard(board.id, title, content))
+      await dispatch(updateBoard({ id: board.id, title, content }))
       await dispatch(getBoardList())
     },
     [title, content]
